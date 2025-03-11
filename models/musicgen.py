@@ -1,6 +1,7 @@
 import logging
 from typing import Optional
 import torch
+import torchaudio  # Add this import
 from audiocraft.models import MusicGen
 
 # Configure logging
@@ -34,7 +35,8 @@ class MusicGenerator:
         try:
             if audio is None:
                 raise ValueError("No audio tensor provided")
-            torch.save(audio.cpu(), filepath, format="wav", sample_rate=self.sample_rate)
+            # Use torchaudio.save for audio files
+            torchaudio.save(filepath, audio.cpu(), sample_rate=self.sample_rate)
             logger.info(f"Audio saved to {filepath}")
             return filepath
         except Exception as e:
