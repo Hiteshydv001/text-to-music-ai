@@ -10,6 +10,11 @@ The Text-to-Music Generator is an AI-powered system that generates music from te
 - Supports waveform visualization.
 - Saves generated music as WAV files.
 
+## Hugginface space Gradio UI
+
+![App UI](![image](https://github.com/user-attachments/assets/4ed1d762-bc9b-45d7-a984-c03e40afe937))
+
+
 ## Directory Structure
 ```
 └── hiteshydv001-text-to-music-ai/
