@@ -12,7 +12,7 @@ The Text-to-Music Generator is an AI-powered system that generates music from te
 
 ## Hugginface space Gradio UI
 
-![App UI](![image](https://github.com/user-attachments/assets/4ed1d762-bc9b-45d7-a984-c03e40afe937))
+![App UI](https://github.com/Hiteshydv001/text-to-music-ai/blob/c42c558fad9d9321ecef949c7d6137d75bfba6ae/t-1.jpg)
 
 
 ## Directory Structure
