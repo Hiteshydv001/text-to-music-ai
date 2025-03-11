@@ -1,7 +1,6 @@
-# Configuration settings
 model:
   name: "facebook/musicgen-small"
-  duration: 10  # seconds
+  duration: 10
 
 training:
   batch_size: 4

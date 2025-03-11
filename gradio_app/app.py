@@ -1,46 +1,44 @@
-# Gradio UI implementation
+import logging
+from typing import Tuple, Optional
 import gradio as gr
-from inference import generate_music
 import librosa
 import numpy as np
+from inference import generate_music
 
-def generate_and_play(text_prompt):
-    # Generate music
-    output_path = generate_music(text_prompt)
-    
-    # Load audio for waveform visualization
-    audio, sr = librosa.load(output_path)
-    waveform = audio  # Raw samples for visualization
-    
-    # Return audio file and waveform
-    return output_path, (sr, waveform)
+logger = logging.getLogger(__name__)
 
-# Gradio interface
+def generate_and_play(text_prompt: str) -> Tuple[Optional[str], Optional[Tuple[int, np.ndarray]]]:
+    """Generate music and prepare for Gradio output."""
+    try:
+        output_path = generate_music(text_prompt)
+        if not output_path:
+            return None, None
+        
+        audio, sr = librosa.load(output_path, sr=None)
+        waveform = (sr, audio)
+        logger.info(f"Prepared audio for Gradio: {output_path}")
+        return output_path, waveform
+    except Exception as e:
+        logger.error(f"Gradio generation failed: {e}")
+        return None, None
+
 with gr.Blocks(title="Text-to-Music Generator") as demo:
     gr.Markdown("# Text-to-Music Generator")
     gr.Markdown("Enter a description to generate music!")
     
     with gr.Row():
-        text_input = gr.Textbox(label="Music Description", placeholder="e.g., 'calm piano melody with soft strings'")
+        text_input = gr.Textbox(label="Music Description", placeholder="e.g., 'calm piano melody'")
         submit_btn = gr.Button("Generate")
     
     with gr.Row():
-        audio_output = gr.Audio(label="Generated Music")
+        audio_output = gr.Audio(label="Generated Music", type="filepath")
         waveform_output = gr.Plot(label="Waveform")
     
     with gr.Row():
         download_btn = gr.File(label="Download WAV")
     
-    # Connect inputs/outputs
-    submit_btn.click(
-        fn=generate_and_play,
-        inputs=text_input,
-        outputs=[audio_output, waveform_output]
-    )
-    audio_output.change(
-        fn=lambda x: x,
-        inputs=audio_output,
-        outputs=download_btn
-    )
+    submit_btn.click(generate_and_play, inputs=text_input, outputs=[audio_output, waveform_output])
+    audio_output.change(lambda x: x, inputs=audio_output, outputs=download_btn)
 
-demo.launch()
+if __name__ == "__main__":
+    demo.launch()

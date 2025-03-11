@@ -1,25 +1,23 @@
-import torchaudio  # Add this import
+import logging
+from typing import Optional
+import torchaudio
 from models.musicgen import MusicGenerator
 
-def generate_music(text_prompt, output_path="output.wav"):
+logger = logging.getLogger(__name__)
+
+def generate_music(text_prompt: str, output_path: str = "output.wav") -> Optional[str]:
+    """Generate music from text prompt."""
     try:
-        # Initialize model
         generator = MusicGenerator()
-        
-        # Generate audio
         audio = generator.generate(text_prompt)
-        
-        # Save to WAV
-        output_path = generator.save_audio(audio, output_path)
-        return output_path
+        if audio is None:
+            raise ValueError("Audio generation failed")
+        return generator.save_audio(audio, output_path)
     except Exception as e:
-        print(f"Error generating music: {e}")
+        logger.error(f"Music generation failed: {e}")
         return None
 
 if __name__ == "__main__":
     prompt = "A slow, emotional piano piece with deep strings."
     output = generate_music(prompt)
-    if output:
-        print(f"Generated music saved to {output}")
-    else:
-        print("Failed to generate music.")
+    print(f"Generated music saved to {output}" if output else "Failed to generate music.")
