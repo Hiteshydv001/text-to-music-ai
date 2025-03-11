@@ -1,4 +1,4 @@
-import torchaudio  # Ensure this import is present
+import torchaudio  # Add this import
 from models.musicgen import MusicGenerator
 
 def generate_music(text_prompt, output_path="output.wav"):
