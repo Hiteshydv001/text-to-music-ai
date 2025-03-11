@@ -1,0 +1,13 @@
+# Configuration settings
+model:
+  name: "facebook/musicgen-small"
+  duration: 10  # seconds
+
+training:
+  batch_size: 4
+  epochs: 10
+  learning_rate: 0.0001
+
+data:
+  raw_dir: "data/raw/"
+  processed_dir: "data/processed/"
